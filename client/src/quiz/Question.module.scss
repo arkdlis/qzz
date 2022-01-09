@@ -1,0 +1,25 @@
+$columns-unit: calc(40*var(--size-unit));
+$font-unit: calc(5*var(--size-unit));
+
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.question {
+  font-weight: 900;
+  font-size: $font-unit;
+  text-align: center;
+  margin: 0 $font-unit $font-unit;
+  
+  color: var(--paletteB);
+}
+
+.answersContainer {
+  display: grid;
+  grid-template-columns: $columns-unit $columns-unit;
+  grid-row: auto auto;
+  grid-column-gap: $font-unit;
+  grid-row-gap: $font-unit;
+}

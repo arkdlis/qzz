@@ -1,0 +1,15 @@
+{
+  "name": "qzz",
+  "version": "1.0.0",
+  "author": "arkdlis",
+  "license": "ISC",
+  "description": "",
+  "workspaces": [
+    "client",
+    "backend"
+  ],
+  "scripts": {
+    "server": "npm run start:dev --workspace=backend",
+    "client": "npm run start --workspace=client"
+  }
+}
