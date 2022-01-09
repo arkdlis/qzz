@@ -4,7 +4,7 @@ $font-unit: calc(3*var(--size-unit));
 .button {
   position: relative;
   background-color: var(--paletteA);
-  padding: $font-unit;
+  padding: 0 $font-unit;
   border: $border-unit solid var(--paletteB);
   border-radius: $font-unit;
 
@@ -23,6 +23,7 @@ $font-unit: calc(3*var(--size-unit));
 
 .text {
   color: inherit;
+  text-align: center;
   z-index: 1;
 }
 

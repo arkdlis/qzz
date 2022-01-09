@@ -1,7 +1,6 @@
 import { CSSProperties } from 'react';
 import { QuizController } from '../quiz/QuizController';
 import css from './App.module.scss';
-import { Title } from './Title';
 import { usePalette } from './usePalette';
 
 declare module 'react' {

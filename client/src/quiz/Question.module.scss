@@ -1,4 +1,5 @@
 $columns-unit: calc(40*var(--size-unit));
+$rows-unit: calc(15*var(--size-unit));
 $font-unit: calc(5*var(--size-unit));
 
 .questionContainer {
@@ -19,7 +20,7 @@ $font-unit: calc(5*var(--size-unit));
 .answersContainer {
   display: grid;
   grid-template-columns: $columns-unit $columns-unit;
-  grid-row: auto auto;
+  grid-template-rows: $rows-unit $rows-unit;
   grid-column-gap: $font-unit;
   grid-row-gap: $font-unit;
 }
