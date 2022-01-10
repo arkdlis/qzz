@@ -2,10 +2,20 @@ $columns-unit: calc(40*var(--size-unit));
 $rows-unit: calc(15*var(--size-unit));
 $font-unit: calc(5*var(--size-unit));
 
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .questionContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .question {

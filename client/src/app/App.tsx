@@ -16,7 +16,7 @@ function App() {
     "--paletteB": paletteB,
   }
   return (
-    <div className={css.background} style={paletteVariablesStyles} onClick={randomizePalette}>
+    <div className={css.background} style={paletteVariablesStyles}>
       <QuizController></QuizController>
     </div>
   );
