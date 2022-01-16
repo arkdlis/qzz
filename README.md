@@ -6,6 +6,15 @@ React, NestJs, socket.io
 
 ## TODO:
 
+- add redux state to quiz
+- finish QuizController.tsx (full mocked behavior of quiz)
+- quiz state on backend (use xstate)
+- socket communication: back <-> front
+- tests?
+- konfiguracja gry
+
+## SPECS:
+
 - styles
   - dynamic theme based on two colors - colors can switch after every question (based on css variables?)
   - minimalistic, bold design

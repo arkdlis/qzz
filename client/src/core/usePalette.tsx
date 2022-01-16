@@ -1,12 +1,13 @@
 
 import { useState } from 'react';
 import { colors } from './colors';
+import { Palette } from './game.model';
 
 function eitherWithChance<T>(chance: number, a: T, b: T) {
   return Math.random() < chance ? a : b
 }
 
-function pickRandomPalette() {
+function pickRandomPalette(): Palette {
   const randomIndex = Math.floor(Math.random()*colors.length)
   const [a, b] = colors[randomIndex]
   return eitherWithChance<[string, string]>(0.5, [a, b], [b, a])

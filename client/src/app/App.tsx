@@ -1,24 +1,16 @@
-import { CSSProperties } from 'react';
-import { QuizController } from '../quiz/QuizController';
-import css from './App.module.scss';
-import { usePalette } from './usePalette';
+import { QuizController } from '../trivia/QuizController';
+import PaletteProvider from '../core/PaletteProvider';
+import { Provider } from 'react-redux';
+import { store } from '../core/store';
 
-declare module 'react' {
-  interface CSSProperties {
-      [key: `--${string}`]: string | number
-  }
-}
 
 function App() {
-  const [[paletteA, paletteB], randomizePalette] = usePalette()
-  const paletteVariablesStyles: CSSProperties = {
-    "--paletteA": paletteA,
-    "--paletteB": paletteB,
-  }
   return (
-    <div className={css.background} style={paletteVariablesStyles}>
-      <QuizController></QuizController>
-    </div>
+    <PaletteProvider>
+      <Provider store={store}>
+        <QuizController></QuizController>
+      </Provider>
+    </PaletteProvider>
   );
 }
 
