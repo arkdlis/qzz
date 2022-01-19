@@ -1,0 +1,125 @@
+{
+  "response_code":0,
+  "results":[
+     {
+        "category":"Entertainment: Television",
+        "type":"multiple",
+        "difficulty":"easy",
+        "question":"Who is the star of the AMC series Breaking Bad?",
+        "correct_answer":"Walter White",
+        "incorrect_answers":[
+           "Saul Goodman",
+           "Jesse Pinkman",
+           "Skyler White"
+        ]
+     },
+     {
+        "category":"Entertainment: Video Games",
+        "type":"multiple",
+        "difficulty":"hard",
+        "question":"What is the main theme song of &quot;Sonic Adventure 2&quot;?",
+        "correct_answer":"Live and Learn",
+        "incorrect_answers":[
+           "Open Your Heart",
+           "Can You Feel the Sunshine?",
+           "His World"
+        ]
+     },
+     {
+        "category":"Geography",
+        "type":"multiple",
+        "difficulty":"medium",
+        "question":"How many countries does Spain have a land border with?",
+        "correct_answer":"5",
+        "incorrect_answers":[
+           "2",
+           "3",
+           "4"
+        ]
+     },
+     {
+        "category":"History",
+        "type":"multiple",
+        "difficulty":"medium",
+        "question":"Which Nation DID NOT have a Colony in Modern-day America?",
+        "correct_answer":"Portugal",
+        "incorrect_answers":[
+           "Spain",
+           "Sweden",
+           "Netherlands"
+        ]
+     },
+     {
+        "category":"Celebrities",
+        "type":"multiple",
+        "difficulty":"medium",
+        "question":"If he was still alive, in what year would Elvis Presley celebrate his 100th birthday?",
+        "correct_answer":"2035",
+        "incorrect_answers":[
+           "2030",
+           "2040",
+           "2045"
+        ]
+     },
+     {
+        "category":"Entertainment: Video Games",
+        "type":"multiple",
+        "difficulty":"medium",
+        "question":"Which of these is not the name of a city in the Grand Theft Auto series?",
+        "correct_answer":"San Andreas",
+        "incorrect_answers":[
+           "San Fierro",
+           "Las Venturas",
+           "Vice City"
+        ]
+     },
+     {
+        "category":"Entertainment: Japanese Anime & Manga",
+        "type":"multiple",
+        "difficulty":"easy",
+        "question":"Who is the colossal titan in &quot;Attack On Titan&quot;?",
+        "correct_answer":"Bertolt Hoover",
+        "incorrect_answers":[
+           "Reiner",
+           "Eren",
+           "Sasha"
+        ]
+     },
+     {
+        "category":"Entertainment: Books",
+        "type":"multiple",
+        "difficulty":"medium",
+        "question":"What is the name of Eragon&#039;s dragon in &quot;Eragon&quot;?",
+        "correct_answer":"Saphira",
+        "incorrect_answers":[
+           "Glaedr",
+           "Thorn",
+           "Arya"
+        ]
+     },
+     {
+        "category":"Sports",
+        "type":"multiple",
+        "difficulty":"medium",
+        "question":"What country hosted the 2014 Winter Olympics?",
+        "correct_answer":"Russia",
+        "incorrect_answers":[
+           "Canada",
+           "United States",
+           "Germany"
+        ]
+     },
+     {
+        "category":"Entertainment: Music",
+        "type":"multiple",
+        "difficulty":"easy",
+        "question":"Which year was the album &quot;Year of the Snitch&quot; by Death Grips released?",
+        "correct_answer":"2018",
+        "incorrect_answers":[
+           "2013",
+           "2017",
+           "2011"
+        ]
+     }
+  ]
+}

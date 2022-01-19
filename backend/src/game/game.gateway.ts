@@ -13,7 +13,7 @@ import { Observable, from, map } from 'rxjs';
     origin: '*',
   },
 })
-export class ChatGateway {
+export class GameGateway {
   @WebSocketServer()
   server: Server;
  
