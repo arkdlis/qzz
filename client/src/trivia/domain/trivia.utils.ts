@@ -1,6 +1,5 @@
 import { omit } from "lodash";
-import { Answer, TriviaQuestion } from "./trivia";
-import { TriviaResult } from "./useTriviaApi";
+import { Answer, TriviaQuestion, TriviaResult } from "./trivia";
 
 function shuffle<T>(array: T[]) {
   let currentIndex = array.length,  randomIndex;

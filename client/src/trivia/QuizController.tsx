@@ -1,16 +1,8 @@
-import { useEffect, useState } from "react"
 import { Question } from "./Question"
-import { useTriviaApi } from "./domain/useTriviaApi"
 import { gameMachine } from "./xstate/quiz.xstate";
 import { useMachine } from '@xstate/react';
 
-// ile sekund
-const totalTime = 20;
-
 export const QuizController = () => {
-  const [index] = useState(Math.floor(Math.random() * 10))
-  const [questions] = useTriviaApi()
-
   const [state, send] = useMachine(gameMachine)
   
   return (
@@ -25,16 +17,13 @@ export const QuizController = () => {
         </>
       }
       {state.matches('question') &&
-        <>
-          <button onClick={() => send('QUESTION_TIMEOUT')}>Whoops! Time is up!</button>
-          <Question
-            triviaQuestion={questions[index]}
-            onSelected={(id) => send('USER_ANSWERED', { answer: id })}
-            elapsedTime={Math.floor(state.context.elapsed || 0)}
-            totalTime={20}
-            selected={state.context.answer}
-          ></Question>
-        </>
+        <Question
+          triviaQuestion={state.context.currentQuestion}
+          onSelected={(id) => send('USER_ANSWERED', { answer: id })}
+          elapsedTime={Math.floor(state.context.elapsed || 0)}
+          totalTime={state.context.totalTime}
+          selected={state.context.answer}
+        ></Question>
       }
       {state.matches('feedback') &&
         <>
@@ -46,7 +35,6 @@ export const QuizController = () => {
         <>
           <div>...is leading the competition!</div>
           <button onClick={() => send('NEXT_QUESTION')}>Let's go to another round</button>
-          <button onClick={() => send('FINISH')}>That was the last question</button>
         </>
       }
       {state.matches('final_ranking') &&
