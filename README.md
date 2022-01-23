@@ -6,11 +6,10 @@ React, NestJs, socket.io
 
 ## TODO:
 
-- add redux state to quiz
-- finish QuizController.tsx (full mocked behavior of quiz)
-- quiz state on backend (use xstate)
+- finish QuizController.tsx (full mocked behavior of quiz, local xstate)
 - socket communication: back <-> front
-- tests?
+- quiz state on backend (use xstate)
+- multiplayer
 - konfiguracja gry
 
 ## SPECS:

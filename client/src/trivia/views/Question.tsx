@@ -1,8 +1,9 @@
-import { Answer } from "./Answer"
-import { TriviaQuestion } from "./domain/trivia"
+import { TriviaQuestion } from "../domain/trivia"
+
+import { Answer } from "../components/Answer"
+import { Timer } from "../components/Timer"
 
 import css from "./Question.module.scss"
-import { Timer } from "./Timer"
 
 export type QuestionProps = {
   triviaQuestion: TriviaQuestion
@@ -34,7 +35,7 @@ export const Question = ({
               text={answer.text}
               selected={answer.order === selected}
               onClick={() => onSelected(answer.order)}
-            ></Answer>
+            />
           ))}
         </div>
       </div>

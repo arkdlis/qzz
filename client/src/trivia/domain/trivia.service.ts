@@ -1,5 +1,5 @@
 import { createDto } from "./trivia.utils";
-import data from "../exampleTriviaResponse.json";
+import data from "./exampleTriviaResponse.json";
 import { TriviaRoot } from "./trivia";
 
 export class TriviaService {

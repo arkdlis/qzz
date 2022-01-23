@@ -22,6 +22,7 @@ type TimerEvent =
     }
 
 export const timerMachine = createMachine<TimerContext, TimerEvent>({
+  id: 'timer',
   initial: 'running',
   context: {
     elapsed: 0,

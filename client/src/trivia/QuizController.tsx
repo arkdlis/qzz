@@ -1,20 +1,20 @@
-import { Question } from "./Question"
+import { Question } from "./views/Question"
 import { gameMachine } from "./xstate/quiz.xstate";
 import { useMachine } from '@xstate/react';
+import { Onboarding } from "./views/Onboarding";
+import { Feedback } from "./views/Feedback";
+import { Ranking } from "./views/Ranking";
+import { FinalRanking } from "./views/FinalRanking";
 
 export const QuizController = () => {
   const [state, send] = useMachine(gameMachine)
-  
+
   return (
     <>
-      <div>state:{state.value}</div>
-      <div>state:{JSON.stringify(state.context)}</div>
-      
       {state.matches('idle') &&
-        <>
-          <div>Are you ready?</div>
-          <button onClick={() => send('PLAYERS_READY')}>I'm ready</button>
-        </>
+        <Onboarding
+          onClick={() => send('PLAYERS_READY')}
+        />
       }
       {state.matches('question') &&
         <Question
@@ -23,25 +23,24 @@ export const QuizController = () => {
           elapsedTime={Math.floor(state.context.elapsed || 0)}
           totalTime={state.context.totalTime}
           selected={state.context.answer}
-        ></Question>
+        />
       }
       {state.matches('feedback') &&
-        <>
-          <div>Your answer is... CORRECT!</div>
-          <button onClick={() => send('FEEDBACK_TIMEOUT')}>Ok... Let's see who is winning</button>
-        </>
+        <Feedback
+          onClick={() => send('FEEDBACK_TIMEOUT')}
+        />
       }
       {state.matches('ranking') &&
-        <>
-          <div>...is leading the competition!</div>
-          <button onClick={() => send('NEXT_QUESTION')}>Let's go to another round</button>
-        </>
+        <Ranking
+          onClick={() => send('NEXT_QUESTION')}
+        />
       }
       {state.matches('final_ranking') &&
-        <>
-          <div>And... the winner is...!</div>
-        </>
+        <FinalRanking />
       }
+
+      <div>state:{state.value}</div>
+      <div>state:{JSON.stringify(state.context)}</div>
     </>
   )
 }
