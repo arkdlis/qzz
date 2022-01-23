@@ -13,14 +13,15 @@ type GameEvent =
 type GameTypestate = 
   | { value: 'idle', context: GameContext }
   | { value: 'question', context: GameContext & {
-    totalTime: number
-    questionNumber: number
-    numberOfQuestions: number
     currentQuestion: TriviaQuestion
     answer: number
     elapsed: number
   } }
-  | { value: 'feedback', context: GameContext }
+  | { value: 'feedback', context: GameContext & {
+    currentQuestion: TriviaQuestion
+    answer: number
+    correctAnswer: number
+  } }
   | { value: 'ranking', context: GameContext }
   | { value: 'final_ranking', context: GameContext }
 
@@ -30,11 +31,11 @@ type GameContext = {
   numberOfQuestions: number
   currentQuestion?: TriviaQuestion
   answer?: number
+  correctAnswer?: number
   elapsed?: number
 }
 
 const service = new TriviaService();
-const questions = service.getTriviaQuestion();
 
 export const gameMachine = createMachine<GameContext, GameEvent, GameTypestate>({
   id: 'game',
@@ -52,15 +53,11 @@ export const gameMachine = createMachine<GameContext, GameEvent, GameTypestate>(
       entry: assign({
         answer: (context) => undefined,
         elapsed: (context) => 0,
-        currentQuestion: (context) => questions[context.questionNumber]
+        currentQuestion: (context) => service.getQuestion(context.questionNumber)
       }),
       invoke: {
         src: timerMachine,
-        data: (context, event) => {
-          return {
-            duration: context.totalTime,
-          };
-        },
+        data: (context, event) => ({ duration: context.totalTime }),
         onDone: 'feedback'
       },
       on: {
@@ -71,11 +68,16 @@ export const gameMachine = createMachine<GameContext, GameEvent, GameTypestate>(
         actions: assign({ elapsed: (context, event) => event.elapsed })
       },
     } },
-    feedback: { on: {
-      FEEDBACK_TIMEOUT: {
-        target: 'ranking',
-      },
-    } },
+    feedback: {
+      entry: assign({
+        correctAnswer: (context) => service.getAnswer(context.questionNumber)
+      }),
+      invoke: {
+        src: timerMachine,
+        data: (context, event) => ({ duration: 3 }),
+        onDone: 'ranking'
+      }
+    },
     ranking: { on: { 
       NEXT_QUESTION: [{
         cond: ({questionNumber, numberOfQuestions}) => questionNumber + 1 !== numberOfQuestions,

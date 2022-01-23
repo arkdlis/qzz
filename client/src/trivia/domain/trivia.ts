@@ -20,13 +20,15 @@ export interface TriviaResult {
 }
 
 // used as DTO: Backend -> Client
-export interface TriviaQuestion {
+export type TriviaQuestionWithAnswer = {
   category: string
   type: string
   difficulty: string
   question: string
   answers: Answer[]
+  correctAnswer: number
 }
+export type TriviaQuestion = Omit<TriviaQuestionWithAnswer, 'correctAnswer'>
 
 export type Answer = {
   order: number // 0,1,2,3

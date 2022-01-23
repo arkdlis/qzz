@@ -12,7 +12,7 @@ $font-unit: calc(5*var(--size-unit));
   flex-grow: 1;
 }
 
-.header {
+.question {
   font-weight: 900;
   font-size: $font-unit;
   text-align: center;
@@ -22,6 +22,9 @@ $font-unit: calc(5*var(--size-unit));
 }
 
 .answersContainer {
-  width: $columns-unit;
-  margin: $font-unit;
+  display: grid;
+  grid-template-columns: $columns-unit $columns-unit;
+  grid-template-rows: $rows-unit $rows-unit;
+  grid-column-gap: $font-unit;
+  grid-row-gap: $font-unit;
 }

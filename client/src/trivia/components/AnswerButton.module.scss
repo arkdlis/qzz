@@ -1,5 +1,6 @@
 $border-unit: calc(var(--size-unit)/2);
 $font-unit: calc(3*var(--size-unit));
+$icon-unit: calc(6*var(--size-unit));
 
 .button {
   position: relative;
@@ -41,5 +42,12 @@ $font-unit: calc(3*var(--size-unit));
     border: $border-unit solid var(--paletteB);
     border-radius: calc(2*$font-unit/3);
   }
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  right: $font-unit;
+  font-size: $icon-unit;
 }
 

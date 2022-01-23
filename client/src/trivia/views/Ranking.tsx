@@ -1,4 +1,4 @@
-import { Answer } from "../components/Answer"
+import { AnswerButton } from "../components/AnswerButton"
 import css from "./Ranking.module.scss"
 
 export type RankingProps = {
@@ -14,7 +14,7 @@ export const Ranking = ({
         ...is leading the competition!
       </div>
       <div className={css.answersContainer}>
-        <Answer
+        <AnswerButton
           text="ACK"
           selected={false}
           onClick={onClick}

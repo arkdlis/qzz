@@ -27,7 +27,9 @@ export const QuizController = () => {
       }
       {state.matches('feedback') &&
         <Feedback
-          onClick={() => send('FEEDBACK_TIMEOUT')}
+          triviaQuestion={state.context.currentQuestion}
+          selected={state.context.answer}
+          correctAnswer={state.context.correctAnswer}
         />
       }
       {state.matches('ranking') &&
@@ -40,7 +42,7 @@ export const QuizController = () => {
       }
 
       <div>state:{state.value}</div>
-      <div>state:{JSON.stringify(state.context)}</div>
+      <div>context:{JSON.stringify(state.context)}</div>
     </>
   )
 }

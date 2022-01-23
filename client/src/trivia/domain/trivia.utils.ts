@@ -1,5 +1,5 @@
 import { omit } from "lodash";
-import { Answer, TriviaQuestion, TriviaResult } from "./trivia";
+import { Answer, TriviaQuestion, TriviaQuestionWithAnswer, TriviaResult } from "./trivia";
 
 function shuffle<T>(array: T[]) {
   let currentIndex = array.length,  randomIndex;
@@ -33,10 +33,11 @@ function getAnswers(triviaQuestion: TriviaResult) {
   }, [])
 }
 
-export function createDto(triviaQuestion: TriviaResult): TriviaQuestion {
+export function createDto(triviaQuestion: TriviaResult): TriviaQuestionWithAnswer {
   const answers = getAnswers(triviaQuestion)
   return {
     ...omit(triviaQuestion, 'correct_answer', 'incorrect_answers'),
-    answers: answers
+    answers: answers,
+    correctAnswer: answers.findIndex(answer => answer.text === triviaQuestion.correct_answer)
   }
 }

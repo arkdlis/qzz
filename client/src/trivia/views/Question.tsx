@@ -1,6 +1,6 @@
 import { TriviaQuestion } from "../domain/trivia"
 
-import { Answer } from "../components/Answer"
+import { AnswerButton } from "../components/AnswerButton"
 import { Timer } from "../components/Timer"
 
 import css from "./Question.module.scss"
@@ -30,7 +30,7 @@ export const Question = ({
         ></div>
         <div className={css.answersContainer}>
           {triviaQuestion.answers.map((answer, idx) => (
-            <Answer
+            <AnswerButton
               key={idx}
               text={answer.text}
               selected={answer.order === selected}

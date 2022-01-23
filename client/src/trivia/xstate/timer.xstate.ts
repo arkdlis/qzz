@@ -16,10 +16,6 @@ type TimerEvent =
       // The TICK event sent by the spawned interval service
       type: 'TICK'
     }
-  | {
-      // User intent to reset the elapsed time to 0
-      type: 'RESET'
-    }
 
 export const timerMachine = createMachine<TimerContext, TimerEvent>({
   id: 'timer',
@@ -38,7 +34,6 @@ export const timerMachine = createMachine<TimerContext, TimerEvent>({
       }),
       invoke: {
         src: context => cb => {
-          console.log(context)
           const interval = setInterval(() => {
             cb('TICK');
           }, 1000 * context.interval);

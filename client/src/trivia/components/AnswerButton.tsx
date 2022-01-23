@@ -1,13 +1,14 @@
 import classNames from "classnames"
-import css from "./Answer.module.scss"
+import css from "./AnswerButton.module.scss"
 
-export type AnswerProps = {
+export type AnswerButtonProps = {
   text: string
   selected: boolean
-  onClick: () => void
+  onClick?: () => void
+  icon?: string
 }
 
-export const Answer = ({text, selected, onClick}: AnswerProps) => {
+export const AnswerButton = ({text, selected, icon, onClick = () => {}}: AnswerButtonProps) => {
   return (
     <div
       onClick={onClick}
@@ -20,6 +21,7 @@ export const Answer = ({text, selected, onClick}: AnswerProps) => {
         className={css.text} 
         dangerouslySetInnerHTML={{__html: text}}
       ></div>
+      { icon && <div className={css.icon}>{icon}</div> }
     </div>
   )
 }

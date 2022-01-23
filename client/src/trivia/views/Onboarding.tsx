@@ -1,5 +1,5 @@
 
-import { Answer } from "../components/Answer"
+import { AnswerButton } from "../components/AnswerButton"
 import css from "./Onboarding.module.scss"
 
 export type OnboardingProps = {
@@ -15,7 +15,7 @@ export const Onboarding = ({
         Are you ready?
       </div>
       <div className={css.answersContainer}>
-        <Answer
+        <AnswerButton
           text="Bring it on!"
           selected={false}
           onClick={onClick}
