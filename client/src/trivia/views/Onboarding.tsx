@@ -3,11 +3,11 @@ import { AnswerButton } from "../components/AnswerButton"
 import css from "./Onboarding.module.scss"
 
 export type OnboardingProps = {
-  onClick: () => void
+  onReady: () => void
 }
 
 export const Onboarding = ({
-  onClick
+  onReady
 }: OnboardingProps) => {
   return (
     <div className={css.container}>
@@ -16,9 +16,9 @@ export const Onboarding = ({
       </div>
       <div className={css.answersContainer}>
         <AnswerButton
-          text="Bring it on!"
+          text="I'm ready"
           selected={false}
-          onClick={onClick}
+          onClick={onReady}
         />
       </div>
     </div>

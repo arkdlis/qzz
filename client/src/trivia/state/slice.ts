@@ -13,7 +13,7 @@ const initialState: TriviaGameState = {
   gameType: 'trivia',
   player: {
     id: '1',
-    username: 'PlayerOne'
+    name: 'PlayerOne'
   },
   palette: ['#00203F', '#ADEFD1'],
 

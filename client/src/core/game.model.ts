@@ -7,7 +7,7 @@ export type Palette = [string, string]
 
 export type Player = {
   id: string
-  username: string
+  name: string
 }
 
 export type GameState = {

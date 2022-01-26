@@ -11,11 +11,11 @@ export const Ranking = ({
   return (
     <div className={css.container}>
       <div className={css.header}>
-        ...is leading the competition!
+        PlayerOne is leading the competition!
       </div>
       <div className={css.answersContainer}>
         <AnswerButton
-          text="ACK"
+          text="OK"
           selected={false}
           onClick={onClick}
         />

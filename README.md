@@ -6,6 +6,7 @@ React, NestJs, socket.io
 
 ## TODO:
 
+- add users and waiting room / onboarding (initial idle state)
 - finish QuizController.tsx (full mocked behavior of quiz, local xstate)
 - socket communication: back <-> front
 - quiz state on backend (use xstate)
