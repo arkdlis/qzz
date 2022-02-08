@@ -11,5 +11,8 @@
   "scripts": {
     "server": "npm run start:dev --workspace=backend",
     "client": "npm run start --workspace=client"
+  },
+  "dependencies": {
+    "@xstate/inspect": "^0.6.2"
   }
 }
