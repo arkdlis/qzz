@@ -7,6 +7,7 @@ import { FinalRanking } from "./views/FinalRanking";
 import { useState } from "react";
 import { Player } from "../core/game.model";
 import { WaitingRoom } from "./views/WaitingRoom";
+import { ActorRef } from "xstate";
 
 export const QuizController = () => {
   const [user] = useState<Player>({
@@ -32,7 +33,7 @@ export const QuizController = () => {
             <Question
               triviaQuestion={state.context.currentQuestion}
               onSelected={(id) => send('USER_ANSWERED', { answer: id, playerId: user.id })}
-              elapsedTime={Math.floor(childState.context.elapsed || 0)}
+              elapsedTime={childState.context.elapsed || 0}
               totalTime={childState.context.duration}
               selected={state.context.answers[user.id]}
             />
@@ -48,6 +49,8 @@ export const QuizController = () => {
       }
       {state.matches('ranking') &&
         <Ranking
+          user={user}
+          ranking={state.context.ranking}
           onClick={() => send('NEXT_QUESTION')}
         />
       }
@@ -61,7 +64,10 @@ export const QuizController = () => {
   )
 }
 
-const WithActorState = ({actor, children}: any) => {
+const WithActorState = ({actor, children}: {
+  actor: ActorRef<any, any>,
+  children: (childState: any) => JSX.Element
+}) => {
   const [childState] = useActor(actor);
   return (
     children(childState)
