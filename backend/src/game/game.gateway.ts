@@ -1,4 +1,3 @@
-import { Scope } from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
@@ -7,7 +6,9 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'http';
-import { Observable, map, Subject, count, shareReplay, tap, BehaviorSubject, take, scan, from } from 'rxjs';
+import { Observable, map, take, from } from 'rxjs';
+import { interpret } from 'xstate';
+import { gameMachine } from './trivia/xstate/quiz.xstate';
 
 @WebSocketGateway({
   cors: {
@@ -18,30 +19,21 @@ export class GameGateway {
   @WebSocketServer()
   server: Server;
 
-  increase$ = new BehaviorSubject(0)
-  counter$ = this.increase$.pipe(
-    scan((acc, val) => acc + 1),
-    tap(x => console.log('stream', x)),
-    shareReplay(0)
-  )
+  gameService = interpret(gameMachine);
+  state$ = from(this.gameService);
 
   constructor() {
-    this.counter$.subscribe(v => console.log('ctor', v))
+    this.gameService.start();
+    // this.state$.subscribe(v => console.log('ctor', v));
   }
  
   @SubscribeMessage('events')
-  onEvent(@MessageBody() data: string): Observable<WsResponse<string>> {
-    console.log('data', data)
-    if (data === 'sub') {
-      return this.counter$.pipe(
-        // take(1),
-        map(counter => ({ event: 'events', data: counter.toString() })),
-      );
-    }
-    if (data === 'inc') {
-      this.increase$.next(1);
-      return;
-    }
-    return from([{ event: 'events', data }])
+  onEvent(@MessageBody() data: any): Observable<WsResponse<any>> {
+    console.log('data', data);
+    this.gameService.send(data.event, data.value);
+    return this.state$.pipe(
+      take(1),
+      map(data => ({ event: 'events', data: data.context }))
+    );
   }
 }

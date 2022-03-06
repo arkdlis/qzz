@@ -1,5 +1,7 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { Player } from '../core/game.model';
+import { WaitingRoom } from '../trivia/views/WaitingRoom';
 
 const useSocket = (messageListener: any) => {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -14,41 +16,24 @@ const useSocket = (messageListener: any) => {
     };
   }, [setSocket, messageListener]);
 
-  const send = useCallback((value: any) => {
-    socket?.emit('events', value);
+  const send = useCallback((event: string, value: any = {}) => {
+    socket?.emit('events', {event, value});
   }, [socket]);
 
-  return [socket, send]
+  return [socket, send] as const
 }
 
-const MessageInput = ({onSubmit}: {onSubmit: any}) => {
-  const [value, setValue] = useState('');
-  const submitForm = (e: FormEvent) => {
-    e.preventDefault();
-    onSubmit(value);
-    setValue('');
-  };
-  
-  return (
-    <form onSubmit={submitForm}>
-      <input
-        autoFocus
-        value={value}
-        placeholder="Type your message"
-        onChange={(e) => {
-          setValue(e.currentTarget.value);
-        }}
-      />
-    </form>
-  );
-};
-
-
 export function SocketClientTest() {
+  const [user] = useState<Player>({
+    id: 'X',
+    name: 'PlayerOne'
+  })
+  const [isHost] = useState(true)
+
   const [messages, setMessages] = useState<string[]>([]);
   const callback = useCallback((message: string) => {
     setMessages((prevMessages) => {
-      const newMessages = [...prevMessages, message];
+      const newMessages = [...prevMessages, JSON.stringify(message)];
       return newMessages;
     });
   }, [setMessages])
@@ -56,17 +41,19 @@ export function SocketClientTest() {
 
   return (
     <div className="App">
-      <header className="app-header">
-        React Chat
-      </header>
       { socket ? (
         <div className="chat-container">
-          <MessageInput onSubmit={send} />
           <div className="message-list">
             {messages.map(m => (
               <div>{m}</div>
             ))}
           </div>
+          <WaitingRoom
+            isHost={isHost}
+            players={{}}
+            onReady={() => send('PLAYER_IS_READY', { player: user })}
+            onStart={() => send('LETS_START')}
+          />
         </div>
       ) : (
         <div>Not Connected</div>

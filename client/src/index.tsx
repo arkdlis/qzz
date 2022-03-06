@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
-import { inspect } from '@xstate/inspect';
 
 // inspect({
 //   iframe: false // open in new window
