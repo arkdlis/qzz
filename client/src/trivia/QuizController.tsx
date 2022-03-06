@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Player } from "../core/game.model";
 import { WaitingRoom } from "./views/WaitingRoom";
 import { ActorRef } from "xstate";
+import { Timer } from "./components/Timer";
 
 export const QuizController = () => {
   const [user] = useState<Player>({
@@ -28,17 +29,19 @@ export const QuizController = () => {
         />
       }
       {state.matches('question') &&
-        <WithActorState actor={state.children.timer}>
-          {(childState: any) => (
-            <Question
-              triviaQuestion={state.context.currentQuestion}
-              onSelected={(id) => send('USER_ANSWERED', { answer: id, playerId: user.id })}
-              elapsedTime={childState.context.elapsed || 0}
-              totalTime={childState.context.duration}
-              selected={state.context.answers[user.id]}
-            />
-          )}
-        </WithActorState>
+        <Question
+          timer={
+            <WithActorState actor={state.children.timer}>{(childState: any) => (
+              <Timer
+                elapsedTime={childState.context.elapsed || 0}
+                totalTime={childState.context.duration}
+              />
+            )}</WithActorState>
+          }
+          triviaQuestion={state.context.currentQuestion}
+          onSelected={(id) => send('USER_ANSWERED', { answer: id, playerId: user.id })}
+          selected={state.context.answers[user.id]}
+        />
       }
       {state.matches('feedback') &&
         <Feedback

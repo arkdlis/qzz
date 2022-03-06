@@ -1,28 +1,26 @@
+import { ReactElement } from "react"
 import { TriviaQuestion } from "../domain/trivia"
 
 import { AnswerButton } from "../components/AnswerButton"
-import { Timer } from "../components/Timer"
 
 import css from "./Question.module.scss"
 
 export type QuestionProps = {
+  timer: ReactElement
   triviaQuestion: TriviaQuestion
-  elapsedTime: number
-  totalTime: number
   selected: number | undefined
   onSelected: (index: number) => void
 }
 
 export const Question = ({
+  timer,
   triviaQuestion,
-  elapsedTime,
-  totalTime,
   selected,
   onSelected
 }: QuestionProps) => {
   return (
     <div className={css.container}>
-      <Timer totalTime={totalTime} elapsedTime={elapsedTime}/>
+      {timer}
       <div className={css.questionContainer}>
         <div
           className={css.question}
@@ -39,7 +37,7 @@ export const Question = ({
           ))}
         </div>
       </div>
-      <Timer totalTime={totalTime} elapsedTime={elapsedTime}/>
+      {timer}
     </div>
   )
 }
