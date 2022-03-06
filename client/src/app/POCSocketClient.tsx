@@ -1,14 +1,34 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const MessageInput = ({socket}: {socket: Socket}) => {
+const useSocket = (messageListener: any) => {
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  useEffect(() => {
+    const newSocket = io(`http://localhost:4000`);
+    newSocket.on('events', messageListener);
+    setSocket(newSocket);
+    return () => {
+      newSocket.off('events', messageListener);
+      newSocket.close()
+    };
+  }, [setSocket, messageListener]);
+
+  const send = useCallback((value: any) => {
+    socket?.emit('events', value);
+  }, [socket]);
+
+  return [socket, send]
+}
+
+const MessageInput = ({onSubmit}: {onSubmit: any}) => {
   const [value, setValue] = useState('');
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
-    socket.emit('events', value);
+    onSubmit(value);
     setValue('');
   };
-
+  
   return (
     <form onSubmit={submitForm}>
       <input
@@ -23,41 +43,16 @@ const MessageInput = ({socket}: {socket: Socket}) => {
   );
 };
 
-function Messages({socket}: {socket: Socket}) {
-  const [messages, setMessages] = useState<string[]>([]);
-
-  useEffect(() => {
-    const messageListener = (message: string) => {
-      setMessages((prevMessages) => {
-        const newMessages = [...prevMessages, message];
-        return newMessages;
-      });
-    };
-    
-    socket.on('events', messageListener);
-
-    return () => {
-      socket.off('events', messageListener);
-    };
-  }, [socket]);
-
-  return (
-    <div className="message-list">
-      {messages.map(m => (
-        <div>{m}</div>
-      ))}
-    </div>
-  );
-}
 
 export function SocketClientTest() {
-  const [socket, setSocket] = useState<Socket | null>(null);
-
-  useEffect(() => {
-    const newSocket = io(`http://localhost:4000`);
-    setSocket(newSocket);
-    return () => {newSocket.close()};
-  }, [setSocket]);
+  const [messages, setMessages] = useState<string[]>([]);
+  const callback = useCallback((message: string) => {
+    setMessages((prevMessages) => {
+      const newMessages = [...prevMessages, message];
+      return newMessages;
+    });
+  }, [setMessages])
+  const [socket, send] = useSocket(callback)
 
   return (
     <div className="App">
@@ -66,8 +61,12 @@ export function SocketClientTest() {
       </header>
       { socket ? (
         <div className="chat-container">
-          <Messages socket={socket} />
-          <MessageInput socket={socket} />
+          <MessageInput onSubmit={send} />
+          <div className="message-list">
+            {messages.map(m => (
+              <div>{m}</div>
+            ))}
+          </div>
         </div>
       ) : (
         <div>Not Connected</div>

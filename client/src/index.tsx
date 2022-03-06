@@ -5,11 +5,9 @@ import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import { inspect } from '@xstate/inspect';
 
-inspect({
-  // options
-  // url: 'https://statecharts.io/inspect', // (default)
-  iframe: false // open in new window
-});
+// inspect({
+//   iframe: false // open in new window
+// });
 
 ReactDOM.render(
   <React.StrictMode>
