@@ -1,13 +1,13 @@
-// import { QuizController } from '../trivia/QuizController';
-// import PaletteProvider from '../core/PaletteProvider';
-import { SocketClientTest } from './POCSocketClient';
+import { QuizController } from '../trivia/QuizController';
+import PaletteProvider from '../core/PaletteProvider';
+// import { SocketClientTest } from './POCSocketClient';
 
 function App() {
   return (
-    // <PaletteProvider>
-    //   <QuizController></QuizController>
-    // </PaletteProvider>
-    <SocketClientTest/>
+    <PaletteProvider>
+      <QuizController></QuizController>
+    </PaletteProvider>
+    // <SocketClientTest/>
   );
 }
 

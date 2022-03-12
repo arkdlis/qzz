@@ -5,13 +5,14 @@ import css from "./WaitingRoom.module.scss"
 
 export type WaitingRoomProps = {
   players: { [key: string]: Player }
+  isReady: boolean
   isHost: boolean
   onStart: () => void
   onReady: () => void
 }
 
 export const WaitingRoom = ({
-  onStart, onReady, isHost, players
+  onStart, onReady, isReady, isHost, players
 }: WaitingRoomProps) => {
   return (
     <div className={css.container}>
@@ -24,11 +25,13 @@ export const WaitingRoom = ({
         )) }
       </div>
       <div className={css.answersContainer}>
-        <AnswerButton
-          text="I'm ready"
-          selected={false}
-          onClick={onReady}
-        />
+        {!isReady && 
+          <AnswerButton
+            text="I'm ready"
+            selected={false}
+            onClick={onReady}
+          />
+        }
       </div>
       {isHost && <div className={css.answersContainer}>
         <AnswerButton

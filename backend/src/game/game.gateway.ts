@@ -6,7 +6,7 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server } from 'http';
-import { Observable, map, take, from } from 'rxjs';
+import { Observable, map, from, shareReplay } from 'rxjs';
 import { interpret } from 'xstate';
 import { gameMachine } from './trivia/xstate/quiz.xstate';
 
@@ -20,7 +20,7 @@ export class GameGateway {
   server: Server;
 
   gameService = interpret(gameMachine);
-  state$ = from(this.gameService);
+  state$ = from(this.gameService).pipe(shareReplay(0));
 
   constructor() {
     this.gameService.start();
@@ -30,10 +30,16 @@ export class GameGateway {
   @SubscribeMessage('events')
   onEvent(@MessageBody() data: any): Observable<WsResponse<any>> {
     console.log('data', data);
-    this.gameService.send(data.event, data.value);
-    return this.state$.pipe(
-      take(1),
-      map(data => ({ event: 'events', data: data.context }))
-    );
+    if (data.event === 'sub') {
+      return this.state$.pipe(
+        // take(1),
+        map(data => ({ event: 'events', data: {
+          value: data.value,
+          context: data.context,
+        } }))
+      );
+    } else {
+      this.gameService.send(data.event, data.value);
+    }
   }
 }
