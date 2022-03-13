@@ -6,7 +6,7 @@ export type Timer = {
 export type Palette = [string, string]
 
 export type Player = {
-  id: string
+  id: number
   name: string
 }
 

@@ -21,6 +21,7 @@ export class GameGateway {
 
   gameService = interpret(gameMachine);
   state$ = from(this.gameService).pipe(shareReplay(0));
+  nextId = 1;
 
   constructor() {
     this.gameService.start();
@@ -31,9 +32,11 @@ export class GameGateway {
   onEvent(@MessageBody() data: any): Observable<WsResponse<any>> {
     console.log('data', data);
     if (data.event === 'sub') {
+      const id = data.value?.length || this.nextId++;
       return this.state$.pipe(
-        // take(1),
         map(data => ({ event: 'events', data: {
+          id: id,
+          name: `Player${id}`,
           value: data.value,
           context: data.context,
         } }))

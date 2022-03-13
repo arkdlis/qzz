@@ -16,7 +16,7 @@ export const Ranking = ({
   return (
     <div className={css.container}>
       <div className={css.header}>
-        PlayerOne is leading the competition with {ranking[user.id]} points!
+        {user.name} has {ranking[user.id]} points!
       </div>
       <div className={css.answersContainer}>
         <AnswerButton

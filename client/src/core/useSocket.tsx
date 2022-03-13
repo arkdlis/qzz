@@ -1,22 +1,23 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 export const useSocket = (messageListener: any) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
+    console.log('connect')
     const newSocket = io(`http://localhost:4000`);
     newSocket.on('events', messageListener);
-    setSocket(newSocket);
+    socket.current = newSocket;
     return () => {
       newSocket.off('events', messageListener);
       newSocket.close()
     };
-  }, [setSocket, messageListener]);
+  }, [messageListener]);
 
   const send = useCallback((event: string, value: any = {}) => {
-    socket?.emit('events', {event, value});
-  }, [socket]);
+    socket.current?.emit('events', {event, value});
+  }, []);
 
   return [socket, send] as const
 }

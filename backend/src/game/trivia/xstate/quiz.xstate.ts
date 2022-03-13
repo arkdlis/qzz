@@ -25,13 +25,13 @@ type GameTypestate =
   | { value: 'final_ranking', context: GameContext }
 
 type GameContext = {
-  players: { [key: string]: Player }
+  players: { [key: Player['id']]: Player }
   totalTime: number
   questionNumber: number
   numberOfQuestions: number
   currentQuestion?: TriviaQuestion
-  answers: { [key: string]: number }
-  ranking: { [key: string]: number }
+  answers: { [key: Player['id']]: number }
+  ranking: { [key: Player['id']]: number }
   correctAnswer?: number
   elapsed?: number
 }
@@ -87,7 +87,7 @@ export const gameMachine = createMachine<GameContext, GameEvent, GameTypestate>(
       },
       exit: assign({
         ranking: (context) => {
-          const rankingChanges = Object.entries(context.answers).reduce<{ [key: string]: number }>((acc, [userId, answer]) => {
+          const rankingChanges = Object.entries(context.answers).reduce<{ [key: Player['id']]: number }>((acc, [userId, answer]) => {
             const totalPoints = context.ranking[userId] || 0
             const assignedPoints = answer == context.correctAnswer ? 10 : 0
             return { ...acc, [userId]: totalPoints + assignedPoints }

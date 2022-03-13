@@ -9,19 +9,29 @@ import { Timer } from "./components/Timer";
 import { useSocket } from "../core/useSocket";
 
 export const QuizController = () => {
-  const [user] = useState<Player>({
-    id: 'X',
+  const [user, setUser] = useState<Player>({
+    id: 0,
     name: 'PlayerOne'
   })
   const [isHost] = useState(true)
   
   const [state, setState] = useState<any>();
   const callback = useCallback((message: any) => {
+    console.log(message)
+    // TODO: call it only once and save userId to localStorage
+    if (!user.id) {
+      setUser({
+        id: message.id,
+        name: message.name
+      })
+    }
     setState(message);
-  }, [setState])
+  }, [])
   const [socket, send] = useSocket(callback)
 
+  // this is ugly :/
   useEffect(() => {
+    console.log('subscribe')
     send('sub')
   }, [send])
 
