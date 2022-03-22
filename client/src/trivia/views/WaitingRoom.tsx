@@ -1,7 +1,6 @@
 
 import { Player } from "../../core/game.model"
 import { AnswerButton } from "../components/AnswerButton"
-import css from "./WaitingRoom.module.scss"
 
 export type WaitingRoomProps = {
   players: { [key: string]: Player }
@@ -15,16 +14,16 @@ export const WaitingRoom = ({
   onStart, onReady, isReady, isHost, players
 }: WaitingRoomProps) => {
   return (
-    <div className={css.container}>
-      <div className={css.header}>
+    <div>
+      <div>
         Waiting on other players...
       </div>
       <div>
         { Object.values(players).map((player, index) => (
-          <span className={css.playerTag} key={index}>{player.name}</span>
+          <span key={index}>{player.name}</span>
         )) }
       </div>
-      <div className={css.answersContainer}>
+      <div>
         {!isReady && 
           <AnswerButton
             text="I'm ready"
@@ -33,7 +32,7 @@ export const WaitingRoom = ({
           />
         }
       </div>
-      {isHost && <div className={css.answersContainer}>
+      {isHost && <div>
         <AnswerButton
           text="That's everyone. Let's start!"
           selected={false}

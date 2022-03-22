@@ -2,41 +2,24 @@ import { Question } from "./views/Question"
 import { Feedback } from "./views/Feedback";
 import { Ranking } from "./views/Ranking";
 import { FinalRanking } from "./views/FinalRanking";
-import { useCallback, useEffect, useState } from "react";
 import { Player } from "../core/game.model";
 import { WaitingRoom } from "./views/WaitingRoom";
 import { Timer } from "./components/Timer";
-import { useSocket } from "../core/useSocket";
+import { EventData } from "xstate";
+import { GameEvent } from "../core/trivia.state";
 
-export const QuizController = () => {
-  const [user, setUser] = useState<Player>({
-    id: 0,
-    name: 'PlayerOne'
-  })
-  const [isHost] = useState(true)
-  
-  const [state, setState] = useState<any>();
-  const callback = useCallback((message: any) => {
-    console.log(message)
-    // TODO: call it only once and save userId to localStorage
-    if (!user.id) {
-      setUser({
-        id: message.id,
-        name: message.name
-      })
-    }
-    setState(message);
-  }, [])
-  const [socket, send] = useSocket(callback)
+type QuizControllerProps = {
+  state: any
+  user: Player
+  isHost: boolean
+  send: (event: GameEvent['type'], value?: EventData) => void
+}
 
-  // this is ugly :/
-  useEffect(() => {
-    console.log('subscribe')
-    send('sub')
-  }, [send])
-
+export const QuizController = ({
+  state, user, isHost, send
+}: QuizControllerProps) => {
   return (
-    socket && state ? (<>
+    <>
       {state.value === 'waiting_room' &&
         <WaitingRoom
           isHost={isHost}
@@ -50,8 +33,8 @@ export const QuizController = () => {
         <Question
           timer={
             <Timer
-              elapsedTime={0}
-              totalTime={1}
+              elapsedTime={state.context.elapsed}
+              totalTime={state.context.totalTime}
             />
           }
           triviaQuestion={state.context.currentQuestion}
@@ -69,6 +52,7 @@ export const QuizController = () => {
       {state.value === 'ranking' &&
         <Ranking
           user={user}
+          players={state.context.players}
           ranking={state.context.ranking}
           onClick={() => send('NEXT_QUESTION')}
         />
@@ -76,9 +60,6 @@ export const QuizController = () => {
       {state.value === 'final_ranking' &&
         <FinalRanking />
       }
-
-      <div>state:{state.value}</div>
-      <div>context:{JSON.stringify(state.context)}</div>
-    </>) : <div>Loading</div>
+    </>
   )
 }

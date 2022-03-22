@@ -1,9 +1,9 @@
 import { ReactElement } from "react"
-import { TriviaQuestion } from "../domain/trivia"
 
 import { AnswerButton } from "../components/AnswerButton"
 
-import css from "./Question.module.scss"
+import { Stack } from "@mui/material"
+import { TriviaQuestion } from "../../core/trivia.state"
 
 export type QuestionProps = {
   timer: ReactElement
@@ -19,25 +19,19 @@ export const Question = ({
   onSelected
 }: QuestionProps) => {
   return (
-    <div className={css.container}>
-      {timer}
-      <div className={css.questionContainer}>
-        <div
-          className={css.question}
-          dangerouslySetInnerHTML={{ __html: triviaQuestion.question }}
-        ></div>
-        <div className={css.answersContainer}>
-          {triviaQuestion.answers.map((answer, idx) => (
-            <AnswerButton
-              key={idx}
-              text={answer.text}
-              selected={answer.order === selected}
-              onClick={() => onSelected(answer.order)}
-            />
-          ))}
-        </div>
-      </div>
-      {timer}
+    <div >
+      <div>{timer}</div>
+      <div dangerouslySetInnerHTML={{ __html: triviaQuestion.question }}/>
+      <Stack spacing={2}>
+        {triviaQuestion.answers.map((answer, idx) => (
+          <AnswerButton
+            key={idx}
+            text={answer.text}
+            selected={answer.order === selected}
+            onClick={() => onSelected(answer.order)}
+          />
+        ))}
+      </Stack>
     </div>
   )
 }

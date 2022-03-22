@@ -1,5 +1,3 @@
-import { GameState, Timer } from "../../core/game.model"
-
 // Code 0: Success Returned results successfully.
 // Code 1: No Results Could not return results. The API doesn't have enough questions for your query. (Ex. Asking for 50 Questions in a Category that only has 20.)
 // Code 2: Invalid Parameter Contains an invalid parameter. Arguements passed in aren't valid. (Ex. Amount = Five)
@@ -35,47 +33,11 @@ export type Answer = {
   text: string
 }
 
-export type TriviaConfig = {
-  mode: 'classic'
-  numberOfQuestions: number // max 50
-  totalTime: number // default 20
-  allowChangingAnswer: boolean // default true
-  category?: string
-  difficulty?: string
-}
-
-// state
-
-type TriviaConfigState = {
-  quizConfig: TriviaConfig
-}
-
-export type QuestionState = GameState & TriviaConfigState & {
-  type: "question"
-  currentQuestionNumber: number
-  currentQuestion: TriviaQuestion
-  time: Timer
-  selectedAnswer: Answer["order"] | null
-}
-
-export type FeedbackState = GameState & TriviaConfigState & {
-  type: "feedback"
-  currentQuestionNumber: number
-  currentQuestion: TriviaQuestion
-  selectedAnswer: Answer["order"] | null
-  correctAnswer: Answer["order"]
-}
-
-export type RankingState = GameState & TriviaConfigState & {
-  type: "ranking"
-  ranks: {
-    id: string
-    username: string
-    score: number
-  }[]
-  prevRanks: {
-    id: string
-    username: string
-    score: number
-  }[]
-}
+// export type TriviaConfig = {
+//   mode: 'classic'
+//   numberOfQuestions: number // max 50
+//   totalTime: number // default 20
+//   allowChangingAnswer: boolean // default true
+//   category?: string
+//   difficulty?: string
+// }

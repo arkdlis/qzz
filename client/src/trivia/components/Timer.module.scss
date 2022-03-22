@@ -1,7 +1,7 @@
-$timer-unit: calc(2*var(--size-unit));
+$timer-unit: 15px;
 
 .timer {
-  background-color: var(--paletteB);
+  background-color: black;
   height: $timer-unit;
   transition: width 0.3s ease-out;
 }

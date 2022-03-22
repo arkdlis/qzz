@@ -1,7 +1,5 @@
-
+import { TriviaQuestion } from "../../core/trivia.state"
 import { AnswerButton } from "../components/AnswerButton"
-import { TriviaQuestion } from "../domain/trivia"
-import css from "./Feedback.module.scss"
 
 export type FeedbackProps = {
   triviaQuestion: TriviaQuestion
@@ -20,12 +18,9 @@ export const Feedback = ({
     return undefined
   }
   return (
-    <div className={css.container}>
-      <div
-        className={css.question}
-        dangerouslySetInnerHTML={{ __html: triviaQuestion.question }}
-      ></div>
-      <div className={css.answersContainer}>
+    <div>
+      <div dangerouslySetInnerHTML={{ __html: triviaQuestion.question }}/>
+      <div>
         {triviaQuestion.answers.map((answer, idx) => (
           <AnswerButton
             key={idx}

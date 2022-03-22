@@ -12,6 +12,9 @@ function clamp(x: number, max: number, min = 0) {
 export const Timer = ({totalTime, elapsedTime}: TimerProps) => {
   const width = clamp(100 - 100*elapsedTime/(totalTime-1), 100)
   return (
-    <div className={css.timer} style={{ width: `${width}%` }}></div>
+    <>
+      <div className={css.timer} style={{ width: `${width}%` }}></div>
+      <div>{elapsedTime}/{totalTime}</div>
+    </>
   )
 }

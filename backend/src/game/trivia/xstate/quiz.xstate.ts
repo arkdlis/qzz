@@ -4,14 +4,15 @@ import { TriviaQuestion } from '../domain/trivia';
 import { TriviaService } from '../domain/trivia.service';
 import { timerMachine } from './timer.xstate';
 
-type GameEvent =
+export type GameEvent =
   | { type: 'PLAYER_IS_READY', player: Player }
   | { type: 'LETS_START' }
   | { type: 'USER_ANSWERED', answer: number, playerId: string }
+  | { type: 'TIMER_UPDATED', elapsed: number }
   | { type: 'FEEDBACK_TIMEOUT' }
   | { type: 'NEXT_QUESTION' }
 
-type GameTypestate = 
+export type GameTypestate = 
   | { value: 'waiting_room', context: GameContext }
   | { value: 'question', context: GameContext & {
     currentQuestion: TriviaQuestion
@@ -74,7 +75,10 @@ export const gameMachine = createMachine<GameContext, GameEvent, GameTypestate>(
       USER_ANSWERED: {
         cond: ({players}, {playerId}) => !!players[playerId],
         actions: assign({ answers: (context, {playerId, answer}) => ({...context.answers, [playerId]: answer}) })
-      }
+      },
+      TIMER_UPDATED: {
+        actions: assign({ elapsed: (context, event) => event.elapsed })
+      },
     } },
     feedback: {
       entry: assign({

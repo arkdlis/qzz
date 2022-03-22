@@ -1,4 +1,4 @@
-import classNames from "classnames"
+import { Button } from "@mui/material"
 import css from "./AnswerButton.module.scss"
 
 export type AnswerButtonProps = {
@@ -10,17 +10,11 @@ export type AnswerButtonProps = {
 
 export const AnswerButton = ({text, selected, icon, onClick = () => {}}: AnswerButtonProps) => {
   return (
-    <div
-      onClick={onClick}
-      className={classNames({
-        [css.button]: true,
-        [css.selected]: selected
-      })}
-    >
-      <div
-        className={css.text} 
-        dangerouslySetInnerHTML={{__html: text}}
-      ></div>
+    <div style={{ display: "flex" }}>
+      <Button onClick={onClick}>
+        <span dangerouslySetInnerHTML={{__html: text}}></span>
+      </Button>
+      {selected ? '<--' : ''}
       { icon && <div className={css.icon}>{icon}</div> }
     </div>
   )

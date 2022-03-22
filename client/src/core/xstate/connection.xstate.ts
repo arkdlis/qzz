@@ -1,65 +1,109 @@
-import { io, Socket } from 'socket.io-client';
-import { createMachine } from 'xstate';
+import { io } from 'socket.io-client';
+import { assign, createMachine, send } from 'xstate';
 import { Player } from '../../core/game.model';
-
-class SocketWrapper {
-  connection: Socket | undefined
-
-  openConnection() {
-    const newSocket = io(`http://localhost:4000`);
-    this.connection = newSocket
-    return 
-  }
-  closeConnection() {
-    if (!this.connection) return
-    this.connection.close()
-    this.connection = undefined
-  };
-  send(ev: string, ...args: any[]) {
-    if (!this.connection) return
-    this.connection.emit('events', args);
-  }
-  listen(ev: string, listener: (...args: any[]) => void) {
-    if (!this.connection) return
-    this.connection.on('events', listener);
-  }
-  removeListener(ev: string, listener: (...args: any[]) => void) {
-    if (!this.connection) return
-    this.connection.off('events', listener);
-    this.connection.disconnect()
-  }
-}
+import { GameState } from '../trivia.state';
 
 type Event =
-  | { type: 'CONNECT' }
+  | { type: 'JOIN', id: string | null, gameId: number }
+  | { type: 'HOST' }
+  | { type: 'RECEIVED_MESSAGE', state: any }
+  | { type: 'SEND_MESSAGE', message: string, value: any }
 
 type Typestate = 
   | { value: 'idle', context: Context }
-  | { value: 'final_ranking', context: Context }
+  | { value: 'connected', context: Context }
 
 type Context = {
-  players: { [key: string]: Player }
+  isHost: boolean | null
+  player: Player
+  gameState?: GameState
 }
 
 export const gameMachine = createMachine<Context, Event, Typestate>({
-  id: 'connection',
+  id: 'root',
   initial: 'idle',
   context: {
-    players: {},
+    isHost: null,
+    player: {
+      id: 0,
+      name: 'PlayerOne'
+    },
   },
   states: {
     idle: { on: {
-      CONNECT: {
+      JOIN: {
         target: 'connected',
         actions: [
-          (context, event) => {
-            
-          }
+          assign({ isHost: (c, e) => false }),
+          send((context, event) => ({
+            type: 'SEND_MESSAGE',
+            message: 'JOIN',
+            value: {
+              id: event.id,
+              gameId: event.gameId,
+            }
+          }))
+        ]
+      },
+      HOST: {
+        target: 'connected',
+        actions: [
+          assign({ isHost: (c, e) => true }),
+          send((context, event) => ({
+            type: 'SEND_MESSAGE',
+            message: 'HOST',
+          }))
         ]
       },
     } },
-    connected: { type: 'final' },
-  }
+    connected: { },
+  },
+  on: {
+    RECEIVED_MESSAGE: {
+      actions: [
+        (context, event) => {
+          console.log(event)
+        },
+        assign({ gameState: (c, e) => e.state }),
+      ]
+    },
+    SEND_MESSAGE: {
+      actions: [
+        send((context, event) => ({
+          type: 'SEND_MESSAGE',
+          message: event.message,
+          value: event.value,
+          gameId: context.gameState?.gameId
+        }), { to: 'socket' }),
+      ]
+    }
+  },
+  invoke: {
+    id: 'socket',
+    src: (context, event) => (callback, onReceive) => {
+      const newSocket = io(`http://localhost:4000`);
+      const messageListener = (message: any) => {
+        callback({ type: 'RECEIVED_MESSAGE', state: message })
+      }
+      newSocket.on('events', messageListener);
+
+      onReceive((e: {
+        type: string
+        message: string
+        value: any
+        gameId?: number
+      }) => {
+        if (e.type === 'SEND_MESSAGE') {
+          newSocket?.emit('events', {event: e.message, value: e.value, gameId: e.gameId});
+        }
+      })
+      
+      return () => {
+        newSocket.off('events', messageListener);
+        newSocket.close()
+      };
+    }
+  },
 });
 
 /*

@@ -16,6 +16,9 @@ type TimerEvent =
       // The TICK event sent by the spawned interval service
       type: 'TICK'
     }
+  | {
+      type: 'always'
+    }
 
 export const timerMachine = createMachine<TimerContext, TimerEvent>({
   id: 'timer',
@@ -53,7 +56,11 @@ export const timerMachine = createMachine<TimerContext, TimerEvent>({
           actions: [
             assign({
               elapsed: context => +(context.elapsed + context.interval).toFixed(2)
-            })
+            }),
+            sendParent((context) => ({
+              type: 'TIMER_UPDATED',
+              elapsed: context.elapsed
+            }))
           ]
         }
       }

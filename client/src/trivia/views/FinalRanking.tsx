@@ -6,8 +6,8 @@ export type FinalRankingProps = {
 
 export const FinalRanking = () => {
   return (
-    <div className={css.container}>
-      <div className={css.header}>
+    <div>
+      <div>
         And... the winner is...!
       </div>
     </div>
